@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, Product } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { withPricing } from 'src/common/utils/price.util';
 
 type SearchParams = {
   query?: string;
@@ -14,16 +15,24 @@ export class ProductsService {
   constructor(private prisma: PrismaService) {}
 
   async findAll(limit: number, offset: number){
-    return this.prisma.product.findMany({
+    const products = await this.prisma.product.findMany({
       take:limit,
       skip: offset
     })
+
+    return products.map(withPricing)
   }
 
   async findOne(id: number){
-    return this.prisma.product.findUnique({
+    const product = await this.prisma.product.findUnique({
         where:{ id }
     })
+
+    if (!product) {
+      throw new NotFoundException('Produto não encontrado');
+    }
+
+    return withPricing(product);
   }
 
   async search({query, category, page, limit}: SearchParams) {
@@ -77,7 +86,7 @@ export class ProductsService {
 
     if(products.length > 0 || !normalizedQuery){
       return {
-        data: products,
+        data: products.map(withPricing),
         meta: {
           page,
           limit,
@@ -136,7 +145,7 @@ export class ProductsService {
   const fuzzyTotal = Number(fuzzyCount[0]?.count ?? 0);
 
   return {
-    data: fuzzyProducts,
+    data: fuzzyProducts.map(withPricing),
     meta: {
       page,
       limit,
