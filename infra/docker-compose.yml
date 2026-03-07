@@ -17,7 +17,6 @@ services:
       context: ../backend/api
       dockerfile: Dockerfile
     container_name: allu-api
-    restart: always
     depends_on:
       - postgres
     environment:
