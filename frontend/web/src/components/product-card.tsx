@@ -1,13 +1,17 @@
+"use client";
+
 import Image from "next/image";
-import { ImageIcon, ShoppingCart } from "lucide-react";
+import { ImageIcon, Loader2, ShoppingCart } from "lucide-react";
 import { Product } from "../types/product";
 import { formatCurrency } from "../lib/format-currency";
 
 type ProductCardProps = {
   product: Product;
+  onAddToCart?: (productId: number) => void;
+  isAdding?: boolean;
 };
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, onAddToCart, isAdding = false }: ProductCardProps) {
   const image = product.photos?.[0];
 
   return (
@@ -15,9 +19,15 @@ export function ProductCard({ product }: ProductCardProps) {
       <button
         type="button"
         title="Adicionar ao carrinho"
+        onClick={() => onAddToCart?.(product.id)}
+        disabled={isAdding}
         className="absolute top-3 right-3 z-10 inline-flex h-9 w-9 items-center justify-center rounded-xl border border-accent bg-card text-accent shadow-sm transition hover:bg-accent hover:text-accent-foreground active:scale-[0.98]"
       >
-        <ShoppingCart className="h-4 w-4" />
+        {isAdding ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <ShoppingCart className="h-4 w-4" />
+        )}
       </button>
 
       <div className="relative flex h-48 items-center justify-center overflow-hidden bg-white p-5">

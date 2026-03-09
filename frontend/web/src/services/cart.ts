@@ -11,6 +11,7 @@ export function getCartToken() {
 
     if(!token) {
         token = crypto.randomUUID();
+        localStorage.setItem(CART_TOKEN_KEY, token)
     }
 
     return token
