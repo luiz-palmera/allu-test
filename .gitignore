@@ -2,14 +2,28 @@
 node_modules/
 **/node_modules/
 
+# package manager / yarn pnp
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
 # build outputs
 dist/
 build/
+out/
 **/dist/
 **/build/
+**/out/
 
-# frontend
-frontend/.next
+# frontend / next
+**/.next/
+**/next-env.d.ts
+.vercel/
+**/.vercel/
 
 # prisma
 .prisma
@@ -35,12 +49,16 @@ logs
 *.log
 npm-debug.log*
 pnpm-debug.log*
+.pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
 # ts
 *.tsbuildinfo
+
+# misc
+*.pem
 
 # OS
 .DS_Store
