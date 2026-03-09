@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-lexend);
+
+  --color-background: #f8f8f6;
+  --color-foreground: #18181b;
+
+  --color-card: #ffffff;
+  --color-card-foreground: #18181b;
+
+  --color-popover: #ffffff;
+  --color-popover-foreground: #18181b;
+
+  --color-muted: #f3f4f6;
+  --color-muted-foreground: #6b7280;
+
+  --color-border: #e7e5e4;
+  --color-input: #e7e5e4;
+
+  --color-primary: #18181b;
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: #ffffff;
+  --color-secondary-foreground: #18181b;
+
+  --color-accent: #f97316;
+  --color-accent-foreground: #ffffff;
+
+  --color-ring: #fdba74;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  @apply bg-background text-foreground font-sans antialiased;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-accent-foreground);
+}
