@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { ImageIcon, Loader2, ShoppingCart } from "lucide-react";
+
 import { Product } from "../types/product";
 import { formatCurrency } from "../lib/format-currency";
 
@@ -11,17 +13,27 @@ type ProductCardProps = {
   isAdding?: boolean;
 };
 
-export function ProductCard({ product, onAddToCart, isAdding = false }: ProductCardProps) {
+export function ProductCard({
+  product,
+  onAddToCart,
+  isAdding = false,
+}: ProductCardProps) {
   const image = product.photos?.[0];
 
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-md transition hover:shadow-lg">
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-md transition hover:shadow-lg">
+      <Link
+        href={`/products/${product.id}`}
+        aria-label={`Ver detalhes de ${product.name}`}
+        className="absolute inset-0 z-10 rounded-xl"
+      />
+
       <button
         type="button"
         title="Adicionar ao carrinho"
         onClick={() => onAddToCart?.(product.id)}
         disabled={isAdding}
-        className="absolute top-3 right-3 z-10 inline-flex h-9 w-9 items-center justify-center rounded-md border border-accent bg-card text-accent shadow-sm transition hover:bg-accent hover:text-accent-foreground active:scale-[0.98]"
+        className="cursor-pointer absolute top-3 right-3 z-20 inline-flex h-9 w-9 items-center justify-center rounded-md border border-accent bg-card text-accent shadow-sm transition hover:bg-accent hover:text-accent-foreground active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
       >
         {isAdding ? (
           <Loader2 className="h-4 w-4 animate-spin" />
@@ -75,6 +87,6 @@ export function ProductCard({ product, onAddToCart, isAdding = false }: ProductC
           </p>
         </div>
       </div>
-    </article>
+    </div>
   );
 }
