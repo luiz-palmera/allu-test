@@ -97,7 +97,7 @@ export class CartService {
         token,
         items: [],
         totalItems: 0,
-        totalAnnualAmount: 0,
+        totalAnualAmount: 0,
         totalMonthlyAmount: 0,
       };
     }
@@ -127,7 +127,7 @@ export class CartService {
 
     const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
 
-    const totalAnnualAmount = Number(
+    const totalAnualAmount = Number(
       items.reduce((acc, item) => acc + item.totalAnnualValue, 0).toFixed(2),
     );
 
@@ -139,7 +139,7 @@ export class CartService {
       token: cart.token,
       items,
       totalItems,
-      totalAnnualAmount,
+      totalAnualAmount,
       totalMonthlyAmount,
     };
   }
@@ -154,7 +154,7 @@ export class CartService {
         token,
         items: [],
         totalItems: 0,
-        totalAnnualAmount: 0,
+        totalAnualAmount: 0,
         totalMonthlyAmount: 0,
       };
     }
