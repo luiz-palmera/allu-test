@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Lexend_Deca } from "next/font/google";
-import { Toaster } from "sonner";
 import "./globals.css";
 import { AppToaster } from "../components/app-toaster";
+import { PageShell } from "@/components/layout/page-shell";
 
 const lexendDeca = Lexend_Deca({
   subsets: ["latin"],
@@ -23,8 +23,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={lexendDeca.variable}>
       <body>
-        {children}
-        <AppToaster/>
+        <PageShell>
+          {children}
+          <AppToaster />
+        </PageShell>
       </body>
     </html>
   );
