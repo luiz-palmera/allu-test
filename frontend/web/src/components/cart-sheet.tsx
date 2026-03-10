@@ -126,7 +126,7 @@ export function CartSheet({ cart, onRemoveItem, removingProductId }: CartSheetPr
                 <div className="mt-1 flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">Total anual</span>
                   <span className="font-medium">
-                    {formatCurrency(cart?.totalAnualAmount ?? 0)}
+                    {formatCurrency(cart?.totalAnnualAmount ?? 0)}
                   </span>
                 </div>
               </div>

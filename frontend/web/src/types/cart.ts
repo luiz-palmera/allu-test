@@ -15,6 +15,6 @@ export type CartResponse = {
     token: string;
     items: CartItem[];
     totalItems: number;
-    totalAnualAmount: number;
+    totalAnnualAmount: number;
     totalMonthlyAmount: number;
 };
