@@ -1,14 +1,14 @@
-import { ProductDetailsPage } from "@/components/pages/product-page";
-import { getProductById } from "@/services/product";
 import { notFound } from "next/navigation";
+import { ProductDetailsPage } from "@/components/pages/product-page";
+import { getProductByIdCached } from "@/services/product";
 
-type ProductPrageProps = {
+type ProductPageProps = {
   params: Promise<{
     id: string;
   }>;
 };
 
-export default async function ProductPage({ params }: ProductPrageProps) {
+export default async function ProductPage({ params }: ProductPageProps) {
   const { id } = await params;
   const productId = Number(id);
 
@@ -17,7 +17,7 @@ export default async function ProductPage({ params }: ProductPrageProps) {
   }
 
   try {
-    const product = await getProductById(productId);
+    const product = await getProductByIdCached(productId);
     return <ProductDetailsPage product={product} />;
   } catch {
     notFound();
