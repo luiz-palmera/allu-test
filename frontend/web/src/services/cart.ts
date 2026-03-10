@@ -44,3 +44,15 @@ export async function addToCart(productId: number, quantity = 1): Promise<CartRe
 
     return response.data;
 }
+
+export async function removeFromCart(productId: number): Promise<CartResponse> {
+    const token = getCartToken();
+
+    const response = await api.delete(`cart/${productId}`, {
+        headers: {
+            "x-cart-token": token,
+        }
+    });
+
+    return response.data;
+}

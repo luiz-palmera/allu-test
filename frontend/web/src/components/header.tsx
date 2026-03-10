@@ -1,12 +1,16 @@
 "use client";
 
 import { Search, ShoppingCart } from "lucide-react";
+import { CartSheet } from "./cart-sheet";
+import { CartResponse } from "../types/cart";
 
 type HeaderProps = {
-  cartItemsCount?: number;
+  cart: CartResponse | null;
+  onRemoveItem?: (productId: number) => void;
+  removingProductId?: number | null;
 };
 
-export function Header({ cartItemsCount = 0 }: HeaderProps) {
+export function Header({ cart, onRemoveItem, removingProductId }: HeaderProps) {
   return (
     <header className="sticky top-0 shadow-xs z-40 border-b border-border bg-background/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-6 py-4">
@@ -25,19 +29,11 @@ export function Header({ cartItemsCount = 0 }: HeaderProps) {
           />
         </div>
 
-        <button
-          type="button"
-          className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-foreground transition hover:border-accent hover:text-accent"
-          title="Carrinho"
-        >
-          <ShoppingCart className="h-5 w-5" />
-
-          {cartItemsCount > 0 && (
-            <span className="absolute -top-1 -right-1 inline-flex min-h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-semibold text-accent-foreground">
-              {cartItemsCount}
-            </span>
-          )}
-        </button>
+        <CartSheet
+          cart={cart}
+          onRemoveItem={onRemoveItem}
+          removingProductId={removingProductId}
+        />
       </div>
     </header>
   );

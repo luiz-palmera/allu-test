@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Lexend_Deca } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
+import { AppToaster } from "../components/app-toaster";
 
 const lexendDeca = Lexend_Deca({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-lexend",
   weight: ["400", "500", "600", "700"],
 });
 
@@ -19,8 +21,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${lexendDeca.variable} antialiased`}>{children}</body>
+    <html lang="pt-BR" className={lexendDeca.variable}>
+      <body>
+        {children}
+        <AppToaster/>
+      </body>
     </html>
   );
 }
