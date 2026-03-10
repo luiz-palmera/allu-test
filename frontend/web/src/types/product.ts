@@ -8,3 +8,14 @@ export type Product = {
     photos: string[];
     createdAt: string;
 }
+
+export type ProductsResponse = {
+  data: Product[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    hasNextPage: boolean;
+    fuzzy?: boolean;
+  };
+};

@@ -21,7 +21,7 @@ export function ProductCard({ product, onAddToCart, isAdding = false }: ProductC
         title="Adicionar ao carrinho"
         onClick={() => onAddToCart?.(product.id)}
         disabled={isAdding}
-        className="absolute top-3 right-3 z-10 inline-flex h-9 w-9 items-center justify-center rounded-xl border border-accent bg-card text-accent shadow-sm transition hover:bg-accent hover:text-accent-foreground active:scale-[0.98]"
+        className="absolute top-3 right-3 z-10 inline-flex h-9 w-9 items-center justify-center rounded-md border border-accent bg-card text-accent shadow-sm transition hover:bg-accent hover:text-accent-foreground active:scale-[0.98]"
       >
         {isAdding ? (
           <Loader2 className="h-4 w-4 animate-spin" />
