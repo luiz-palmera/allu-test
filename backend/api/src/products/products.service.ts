@@ -14,13 +14,29 @@ type SearchParams = {
 export class ProductsService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(limit: number, offset: number){
-    const products = await this.prisma.product.findMany({
-      take:limit,
-      skip: offset
-    })
+  async findAll(limit: number, offset: number) {
+    const [products, total] = await Promise.all([
+      this.prisma.product.findMany({
+        take: limit,
+        skip: offset,
+        orderBy: {
+          id: "asc",
+        },
+      }),
+      this.prisma.product.count(),
+    ]);
 
-    return products.map(withPricing)
+    const data = products.map(withPricing);
+
+    return {
+      data,
+      meta: {
+        limit,
+        offset,
+        total,
+        hasNextPage: offset + products.length < total,
+      },
+    };
   }
 
   async findOne(id: number){
