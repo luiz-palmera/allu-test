@@ -1,20 +1,18 @@
 "use client";
 
-import { Search, ShoppingCart } from "lucide-react";
+import { Search } from "lucide-react";
 import { CartSheet } from "./cart-sheet";
-import { CartResponse } from "../types/cart";
+import { useCartStore } from "@/stores/cart-store";
 
-type HeaderProps = {
-  cart: CartResponse | null;
-  onRemoveItem?: (productId: number) => void;
-  removingProductId?: number | null;
-};
+export function Header() {
+  const cart = useCartStore((state) => state.cart);
+  const removeProduct = useCartStore((state) => state.removeProduct);
+  const removingProductId = useCartStore((state) => state.removingProductId);
 
-export function Header({ cart, onRemoveItem, removingProductId }: HeaderProps) {
   return (
-    <header className="sticky top-0 shadow-xs z-40 border-b border-border bg-background/95 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/95 shadow-xs backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-6 py-4">
-        <div className="group text-2xl tracking-tight shrink-0 cursor-pointer">
+        <div className="group shrink-0 cursor-pointer text-2xl tracking-tight">
           <span className="group-hover:text-accent">allu</span>
           <span className="text-accent group-hover:text-foreground">.</span>
         </div>
@@ -31,7 +29,7 @@ export function Header({ cart, onRemoveItem, removingProductId }: HeaderProps) {
 
         <CartSheet
           cart={cart}
-          onRemoveItem={onRemoveItem}
+          onRemoveItem={removeProduct}
           removingProductId={removingProductId}
         />
       </div>

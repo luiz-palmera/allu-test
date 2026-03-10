@@ -18,7 +18,11 @@ type CartSheetProps = {
   removingProductId?: number | null;
 };
 
-export function CartSheet({ cart, onRemoveItem, removingProductId }: CartSheetProps) {
+export function CartSheet({
+  cart,
+  onRemoveItem,
+  removingProductId,
+}: CartSheetProps) {
   const items = cart?.items ?? [];
 
   return (
@@ -41,12 +45,12 @@ export function CartSheet({ cart, onRemoveItem, removingProductId }: CartSheetPr
 
       <SheetContent className="w-full sm:max-w-md">
         <SheetHeader>
-            <SheetTitle>
-                <div className="text-accent flex gap-2">
-                <ShoppingCart/> 
-                Carrinho
-                </div>
-            </SheetTitle>
+          <SheetTitle>
+            <div className="text-accent flex gap-2">
+              <ShoppingCart />
+              Carrinho
+            </div>
+          </SheetTitle>
         </SheetHeader>
 
         <div className="flex min-h-0 flex-1 flex-col px-3 pb-4">
@@ -63,22 +67,22 @@ export function CartSheet({ cart, onRemoveItem, removingProductId }: CartSheetPr
                     className="rounded-xl border border-border bg-card p-4"
                   >
                     <div className="flex items-center gap-4">
-                        {item.product.photos?.[0] ? (
+                      {item.product.photos?.[0] ? (
                         <Image
-                            src={item.product.photos[0]}
-                            alt={item.product.name}
-                            width={72}
-                            height={72}
-                            className="h-18 w-18 rounded-lg object-contain bg-white"
-                            unoptimized
+                          src={item.product.photos[0]}
+                          alt={item.product.name}
+                          width={72}
+                          height={72}
+                          className="h-18 w-18 rounded-lg object-contain bg-white"
+                          unoptimized
                         />
-                        ) : (
+                      ) : (
                         <div className="flex h-18 w-18 items-center justify-center rounded-lg bg-muted text-xs text-muted-foreground">
-                            Sem imagem
+                          Sem imagem
                         </div>
-                        )}
+                      )}
 
-                        <p className="text-sm font-medium">{item.product.name}</p>
+                      <p className="text-sm font-medium">{item.product.name}</p>
                     </div>
                     <div className="w-full flex justify-between items-end">
                       <div>
@@ -92,19 +96,19 @@ export function CartSheet({ cart, onRemoveItem, removingProductId }: CartSheetPr
                           {formatCurrency(item.totalAnnualValue)} ao ano
                         </p>
                       </div>
-                        <button
-                          type="button"
-                          title="Remover item"
-                          onClick={() => onRemoveItem?.(item.productId)}
-                          disabled={removingProductId === item.productId}
-                          className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border text-muted-foreground transition hover:border-destructive hover:text-destructive disabled:opacity-60"
-                        >
-                          {removingProductId === item.productId ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : (
-                            <Trash2 className="h-4 w-4" />
-                          )}
-                        </button>
+                      <button
+                        type="button"
+                        title="Remover item"
+                        onClick={() => onRemoveItem?.(item.productId)}
+                        disabled={removingProductId === item.productId}
+                        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border text-muted-foreground transition hover:border-destructive hover:text-destructive disabled:opacity-60"
+                      >
+                        {removingProductId === item.productId ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Trash2 className="h-4 w-4" />
+                        )}
+                      </button>
                     </div>
                   </div>
                 ))}
