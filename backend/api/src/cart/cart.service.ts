@@ -1,6 +1,6 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AddCartItemDto } from './dto/add-cart-item.dto';
-import { Injectable, NotFoundException } from '@nestjs/common';
 import { getMonthlyValue, withPricing } from 'src/common/utils/price.util';
 
 @Injectable()
@@ -34,6 +34,8 @@ export class CartService {
   }
 
   async addItem(token: string, dto: AddCartItemDto) {
+    const quantity = dto.quantity ?? 1;
+
     const product = await this.prisma.product.findUnique({
       where: { id: dto.productId },
     });
@@ -63,7 +65,7 @@ export class CartService {
         },
         data: {
           quantity: {
-            increment: dto.quantity,
+            increment: quantity,
           },
         },
       });
@@ -72,7 +74,7 @@ export class CartService {
         data: {
           cartId: cart.id,
           productId: dto.productId,
-          quantity: dto.quantity,
+          quantity,
         },
       });
     }
