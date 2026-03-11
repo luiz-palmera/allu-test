@@ -25,5 +25,17 @@ services:
     ports:
       - "3000:3000"
 
+  frontend:
+    build:
+      context: ../frontend/web
+      dockerfile: Dockerfile
+    container_name: allu-frontend
+    depends_on:
+      - api
+    environment:
+      NEXT_PUBLIC_API_URL: http://api:3000
+    ports:
+      - "3001:3000"
+
 volumes:
   postgres_data:
