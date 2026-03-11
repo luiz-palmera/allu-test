@@ -65,7 +65,7 @@ export function ProductDetailsPage({ product }: ProductDetailsPageProps) {
         Voltar para o catálogo
       </Link>
 
-      <section className="bg-card rounded-xl p-10 grid gap-8 lg:grid-cols-2">
+      <section className="grid gap-8 rounded-xl bg-card p-10 lg:grid-cols-2">
         <div className="space-y-4">
           <div className="relative aspect-square overflow-hidden">
             <Image
@@ -73,7 +73,7 @@ export function ProductDetailsPage({ product }: ProductDetailsPageProps) {
               alt={product.name}
               fill
               priority
-              className="object-contain p-4 rounded-2xl"
+              className="rounded-2xl object-contain p-4"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </div>
@@ -83,7 +83,7 @@ export function ProductDetailsPage({ product }: ProductDetailsPageProps) {
               <button
                 type="button"
                 onClick={() => changeImage("left")}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border bg-background text-muted-foreground transition hover:text-foreground cursor-pointer"
+                className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full border bg-background text-muted-foreground transition hover:text-foreground"
                 aria-label="Imagem anterior"
               >
                 <ChevronLeft className="h-5 w-5" />
@@ -122,7 +122,7 @@ export function ProductDetailsPage({ product }: ProductDetailsPageProps) {
               <button
                 type="button"
                 onClick={() => changeImage("right")}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border bg-background text-muted-foreground transition hover:text-foreground cursor-pointer"
+                className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full border bg-background text-muted-foreground transition hover:text-foreground"
                 aria-label="Próxima imagem"
               >
                 <ChevronRight className="h-5 w-5" />
@@ -132,7 +132,7 @@ export function ProductDetailsPage({ product }: ProductDetailsPageProps) {
         </div>
 
         <div className="flex flex-col justify-around gap-4">
-          <span className="mb-3 self-end w-fit rounded-full bg-accent/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent">
+          <span className="mb-3 w-fit self-end rounded-full bg-accent/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent">
             {product.category}
           </span>
 
@@ -146,18 +146,33 @@ export function ProductDetailsPage({ product }: ProductDetailsPageProps) {
             </p>
           </div>
 
-          <div className="rounded-2xl border p-5 flex flex-col gap-5">
-            <div className="space-y-3">
+          <div className="flex flex-col gap-5 rounded-2xl border p-5">
+            <div className="space-y-4">
               <div className="flex items-center justify-between gap-4">
                 <div className="flex flex-col">
-                  <span className="text-sm">PREÇO/MÊS</span>
+                  <span className="text-sm font-medium">ASSINATURA MENSAL</span>
                   <span className="text-xs text-muted-foreground">
-                    no cartão de crédito ou pix automático
+                    cobrança recorrente no cartão de crédito ou pix automático
                   </span>
                 </div>
 
-                <span className="text-xl font-semibold">
+                <span className="text-xl font-semibold text-accent">
                   {formatCurrency(product.monthlyValue)}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between gap-4 border-t pt-4">
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium">
+                    VALOR ANUAL EQUIVALENTE
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    referência total do período de 12 meses
+                  </span>
+                </div>
+
+                <span className="text-lg font-medium">
+                  {formatCurrency(product.annualValue)}
                 </span>
               </div>
             </div>

@@ -132,12 +132,13 @@ export function CatalogPage({
             </div>
           ) : (
             <>
-              {visibleProducts.map((product) => (
+              {visibleProducts.map((product, index) => (
                 <ProductCard
                   key={product.id}
                   product={product}
                   onAddToCart={addProduct}
                   isAdding={addingProductId === product.id}
+                  eagerImage={index < 4}
                 />
               ))}
 

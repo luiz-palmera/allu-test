@@ -57,7 +57,6 @@ export const useProductSearchStore = create<ProductSearchStore>((set, get) => ({
         latestQuery === trimmed
       ) {
         set({ suggestions: response.suggestions });
-        console.log("Resposta autocomplete:", trimmed, response.suggestions);
       }
     } catch {
       const latestQuery = get().query.trim();

@@ -11,12 +11,14 @@ type ProductCardProps = {
   product: Product;
   onAddToCart?: (productId: number) => void;
   isAdding?: boolean;
+  eagerImage?: boolean;
 };
 
 export function ProductCard({
   product,
   onAddToCart,
   isAdding = false,
+  eagerImage,
 }: ProductCardProps) {
   const image = product.photos?.[0];
 
@@ -49,6 +51,7 @@ export function ProductCard({
             alt={product.name}
             width={200}
             height={200}
+            loading={eagerImage ? "eager" : "lazy"}
             className="h-auto max-h-40 w-auto object-contain transition duration-300 group-hover:scale-[1.02]"
             unoptimized
           />
