@@ -11,8 +11,11 @@ const lexendDeca = Lexend_Deca({
 });
 
 export const metadata: Metadata = {
-  title: "Allu Test",
-  description: "Catálogo de produtos e carrinho",
+  title: {
+    default: "Catálogo de Produtos | Allu Test",
+    template: "%s | Allu Test",
+  },
+  description: "Catálogo de produtos com busca avançada e carrinho persistente",
 };
 
 export default function RootLayout({
