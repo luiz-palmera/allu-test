@@ -39,25 +39,33 @@ Isso iniciará automaticamente:
 - API (NestJS)
 - Frontend (Next.js)
 
+## 3. Popular o banco com dados iniciais
+
+Após subir os containers, execute:
+
+```bash
+docker exec -it allu-api npx prisma db seed
+```
+
 ---
 
 # Acessos da aplicação
 
 Frontend
 
-```
+```text
 http://localhost:3001
 ```
 
 API
 
-```
+```text
 http://localhost:3000
 ```
 
 Documentação da API (Swagger)
 
-```
+```text
 http://localhost:3000/docs
 ```
 
