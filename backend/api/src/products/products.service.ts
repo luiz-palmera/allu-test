@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Prisma, Product } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { withPricing } from 'src/common/utils/price.util';
@@ -12,9 +12,13 @@ type SearchParams = {
 
 @Injectable()
 export class ProductsService {
+  private readonly logger = new Logger(ProductsService.name);
+
   constructor(private prisma: PrismaService) {}
 
   async findAll(limit: number, offset: number) {
+    this.logger.log(`Listing products with limit=${limit} offset=${offset}`);
+
     const [products, total] = await Promise.all([
       this.prisma.product.findMany({
         take: limit,
@@ -27,6 +31,10 @@ export class ProductsService {
     ]);
 
     const data = products.map(withPricing);
+
+    this.logger.log(
+      `Products listed successfully: returned=${data.length} total=${total}`,
+    );
 
     return {
       data,
@@ -45,6 +53,7 @@ export class ProductsService {
     });
 
     if (!product) {
+      this.logger.warn(`Product not found for id=${id}`);
       throw new NotFoundException('Produto não encontrado');
     }
 
@@ -58,6 +67,10 @@ export class ProductsService {
     const normalizedCategory = category?.trim();
 
     const fuzzyThreshold = 0.15;
+
+    this.logger.log(
+      `Searching products query="${normalizedQuery ?? ''}" category="${normalizedCategory ?? ''}" page=${page} limit=${limit}`,
+    );
 
     const where = {
       AND: [
@@ -109,6 +122,10 @@ export class ProductsService {
     ]);
 
     if (products.length > 0 || !normalizedQuery) {
+      this.logger.log(
+        `Search finished without fuzzy: returned=${products.length} total=${total}`,
+      );
+
       return {
         data: products.map(withPricing),
         meta: {
@@ -120,6 +137,10 @@ export class ProductsService {
         },
       };
     }
+
+    this.logger.log(
+      `No direct results found for query="${normalizedQuery}". Falling back to fuzzy search.`,
+    );
 
     const categoryFilter = normalizedCategory
       ? Prisma.sql`AND unaccent(lower(p."category")) LIKE unaccent(lower(${`%${normalizedCategory}%`}))`
@@ -168,6 +189,10 @@ export class ProductsService {
 
     const fuzzyTotal = Number(fuzzyCount[0]?.count ?? 0);
 
+    this.logger.log(
+      `Fuzzy search finished: returned=${fuzzyProducts.length} total=${fuzzyTotal}`,
+    );
+
     return {
       data: fuzzyProducts.map(withPricing),
       meta: {
@@ -184,8 +209,11 @@ export class ProductsService {
     const normalizedQuery = query.trim();
 
     if (!normalizedQuery) {
+      this.logger.log('Autocomplete requested with empty query');
       return { suggestions: [] };
     }
+
+    this.logger.log(`Autocomplete requested for query="${normalizedQuery}"`);
 
     try {
       const [
@@ -269,6 +297,10 @@ export class ProductsService {
       );
 
       if (uniqueSuggestions.length >= 5) {
+        this.logger.log(
+          `Autocomplete finished without fuzzy: suggestions=${uniqueSuggestions.length}`,
+        );
+
         return {
           suggestions: uniqueSuggestions.slice(0, 8),
         };
@@ -335,11 +367,18 @@ export class ProductsService {
           ),
       );
 
+      this.logger.log(
+        `Autocomplete finished with fuzzy=${fuzzySuggestions.length > 0}: suggestions=${finalSuggestions.length}`,
+      );
+
       return {
         suggestions: finalSuggestions.slice(0, 8),
       };
     } catch (error) {
-      console.error('Erro no autocomplete:', error);
+      this.logger.error(
+        `Autocomplete failed for query="${normalizedQuery}"`,
+        error instanceof Error ? error.stack : undefined,
+      );
       throw error;
     }
   }

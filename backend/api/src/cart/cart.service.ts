@@ -1,13 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AddCartItemDto } from './dto/add-cart-item.dto';
 import { getMonthlyValue, withPricing } from 'src/common/utils/price.util';
 
 @Injectable()
 export class CartService {
+  private readonly logger = new Logger(CartService.name);
+
   constructor(private readonly prisma: PrismaService) {}
 
   async getOrCreateCart(token: string) {
+    this.logger.log(`Loading cart for token=${token}`);
+
     const existingCart = await this.prisma.cart.findUnique({
       where: { token },
       include: {
@@ -19,7 +23,12 @@ export class CartService {
       },
     });
 
-    if (existingCart) return existingCart;
+    if (existingCart) {
+      this.logger.log(`Existing cart found for token=${token}`);
+      return existingCart;
+    }
+
+    this.logger.log(`No cart found. Creating new cart for token=${token}`);
 
     return this.prisma.cart.create({
       data: { token },
@@ -36,11 +45,18 @@ export class CartService {
   async addItem(token: string, dto: AddCartItemDto) {
     const quantity = dto.quantity ?? 1;
 
+    this.logger.log(
+      `Adding productId=${dto.productId} quantity=${quantity} to cart token=${token}`,
+    );
+
     const product = await this.prisma.product.findUnique({
       where: { id: dto.productId },
     });
 
     if (!product) {
+      this.logger.warn(
+        `Product not found while adding to cart: productId=${dto.productId}`,
+      );
       throw new NotFoundException('Produto não encontrado');
     }
 
@@ -56,6 +72,10 @@ export class CartService {
     });
 
     if (existingItem) {
+      this.logger.log(
+        `Product already exists in cart. Incrementing quantity for productId=${dto.productId}`,
+      );
+
       await this.prisma.cartItem.update({
         where: {
           cartId_productId: {
@@ -70,6 +90,10 @@ export class CartService {
         },
       });
     } else {
+      this.logger.log(
+        `Creating cart item for productId=${dto.productId} in cart token=${token}`,
+      );
+
       await this.prisma.cartItem.create({
         data: {
           cartId: cart.id,
@@ -83,6 +107,8 @@ export class CartService {
   }
 
   async getCart(token: string) {
+    this.logger.log(`Fetching cart contents for token=${token}`);
+
     const cart = await this.prisma.cart.findUnique({
       where: { token },
       include: {
@@ -95,6 +121,8 @@ export class CartService {
     });
 
     if (!cart) {
+      this.logger.log(`No cart found for token=${token}. Returning empty cart`);
+
       return {
         token,
         items: [],
@@ -137,6 +165,10 @@ export class CartService {
       items.reduce((acc, item) => acc + item.totalMonthlyValue, 0).toFixed(2),
     );
 
+    this.logger.log(
+      `Cart loaded for token=${token}: items=${items.length} totalItems=${totalItems}`,
+    );
+
     return {
       token: cart.token,
       items,
@@ -147,11 +179,17 @@ export class CartService {
   }
 
   async removeItem(token: string, productId: number) {
+    this.logger.log(`Removing productId=${productId} from cart token=${token}`);
+
     const cart = await this.prisma.cart.findUnique({
       where: { token },
     });
 
     if (!cart) {
+      this.logger.log(
+        `Cart not found while removing item. Returning empty cart for token=${token}`,
+      );
+
       return {
         token,
         items: [],
@@ -167,6 +205,10 @@ export class CartService {
         productId,
       },
     });
+
+    this.logger.log(
+      `ProductId=${productId} removed successfully from cart token=${token}`,
+    );
 
     return this.getCart(token);
   }
