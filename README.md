@@ -28,9 +28,11 @@ cd allu-test
 
 ## 2. Subir a aplicação com Docker
 
+Dentro da pasta `infra`, execute:
+
 ```bash
 cd infra
-docker compose up --build
+docker compose up --build -d
 ```
 
 Isso iniciará automaticamente:
