@@ -300,9 +300,7 @@ O projeto foi preparado para ser executado via Docker, garantindo **reprodutibil
 Possíveis evoluções:
 
 - autenticação de usuários
-- limpeza completa do carrinho
 - testes E2E
-- cache distribuído
 - observabilidade mais avançada
 - arquitetura baseada em microserviços
 
